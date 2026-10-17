@@ -128,9 +128,14 @@ if (!skipInstall) {
   for (const f of ['package.json', 'package-lock.json']) {
     fs.rmSync(path.join(SERVER_DIR, f), { force: true });
   }
+  // --omit=optional: the only optional dependency is node-pty (64 MB of native
+  // prebuilds), used solely by the daemon's hosted terminal sessions. Claude
+  // Desktop runs the stdio server, which never loads it (it is imported lazily
+  // and its absence is handled), so it would quadruple the bundle and ship
+  // native binaries to Windows for nothing. 3.1.0 grew 5.7 MB -> 21.8 MB on it.
   run('npm', [
     'install', `${PKG}@${serverVersion}`,
-    '--omit=dev', '--prefix', SERVER_DIR,
+    '--omit=dev', '--omit=optional', '--prefix', SERVER_DIR,
     '--no-audit', '--no-fund',
   ]);
 } else {
