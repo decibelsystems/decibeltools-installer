@@ -177,13 +177,13 @@ fs.mkdirSync(STAGE, { recursive: true });
 
 const SHIP = ['manifest.json', 'icon.png', 'LICENSE', 'README.md'];
 for (const f of SHIP) fs.cpSync(path.join(ROOT, f), path.join(STAGE, f));
-fs.cpSync(path.join(SERVER_DIR, 'bootstrap.mjs'), path.join(STAGE, 'server', 'bootstrap.mjs'));
+for (const f of ['bootstrap.mjs', 'daemonStart.mjs']) fs.cpSync(path.join(SERVER_DIR, f), path.join(STAGE, 'server', f));
 fs.cpSync(
   path.join(SERVER_DIR, 'node_modules'),
   path.join(STAGE, 'server', 'node_modules'),
   { recursive: true, dereference: true }
 );
-console.log(`  staged ${SHIP.length + 2} entries`);
+console.log(`  staged ${SHIP.length + 3} entries`);
 
 // The failure this build previously shipped: the server's own entry file missing.
 // Assert the manifest's entry point exists AND that it can resolve the server.

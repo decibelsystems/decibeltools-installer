@@ -18,6 +18,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
+import { startDaemonIfWanted } from './daemonStart.mjs';
 
 const log = (msg) => process.stderr.write(`[decibel-bootstrap] ${msg}\n`);
 
@@ -181,6 +182,10 @@ main();
 // boots, so the extension installs fine and then exposes no tools at all.
 const require = createRequire(import.meta.url);
 const serverPath = require.resolve('@decibelsystems/tools');
+
+// "Connect to Agent HQ": start the shared daemon beside this stdio server if
+// none is answering. Not awaited, so it never delays the MCP handshake.
+void startDaemonIfWanted(serverPath);
 
 try {
   await import(pathToFileURL(serverPath).href);
