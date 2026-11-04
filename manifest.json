@@ -34,8 +34,9 @@
       "env": {
         "NODE_ENV": "production",
         "DECIBEL_PROJECT_ROOT": "${user_config.project_folder}",
-        "DECIBEL_FACADES": "sentinel,architect,dojo,designer,oracle,roadmap,friction,workflow,git,context,decibel,registry",
-        "DECIBEL_LICENSE_KEY": "${user_config.license_key}"
+        "DECIBEL_FACADES": "sentinel,architect,dojo,designer,oracle,roadmap,friction,workflow,git,context,decibel,registry,chat",
+        "DECIBEL_LICENSE_KEY": "${user_config.license_key}",
+        "DECIBEL_START_DAEMON": "${user_config.connect_hq}"
       }
     }
   },
@@ -54,6 +55,13 @@
       "description": "Unlocks Pro features. Leave blank to use the free tier.",
       "sensitive": true,
       "required": false
+    },
+    "connect_hq": {
+      "type": "boolean",
+      "title": "Connect to Agent HQ",
+      "description": "Also run Decibel's background service on this computer, so Agent HQ can pair with it and you can message your agents across machines. Off by default. It listens only on this computer, and HQ still needs your Allow on screen to pair.",
+      "required": false,
+      "default": false
     }
   },
   "compatibility": {
